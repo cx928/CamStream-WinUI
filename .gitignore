@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+.vs/
+*.swp
+*.swo
+
+# Windows
+desktop.ini
+Thumbs.db
+
+# WinUI build output
+bin/
+obj/
+*.msix
+*.msixbundle
+*.appx
+*.appxbundle
+
+# Large downloaded runtime packages
+packages/*.zip
+packages/*.7z
+packages/*.exe
+
+packages/*.zip.*
+

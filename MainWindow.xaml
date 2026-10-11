@@ -1,0 +1,58 @@
+<Window
+    x:Class="CamStream.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="CamStream">
+    <Grid Background="#F5F7FA">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="232"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Background="#101B2D">
+            <Grid Margin="20,26">
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <Border Width="38" Height="38" CornerRadius="12" Background="#2D6AE3"><FontIcon Glyph="&#xE714;" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                    <StackPanel VerticalAlignment="Center" Spacing="1"><TextBlock Text="CamStream" FontSize="18" FontWeight="SemiBold" Foreground="White"/><TextBlock Text="CAMERA TO NETWORK" FontSize="9" CharacterSpacing="120" Foreground="#8C9AB0"/></StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,54,0,0" Spacing="9">
+                    <TextBlock Text="工作区" FontSize="11" Foreground="#8190A7" Margin="12,0,0,7"/>
+                    <Border Background="#233653" CornerRadius="8" Padding="12,10"><StackPanel Orientation="Horizontal" Spacing="12"><FontIcon Glyph="&#xE8D4;" FontSize="16" Foreground="#78A5FF"/><TextBlock Text="实时推流" FontSize="14" Foreground="White"/></StackPanel></Border>
+                    <Border Padding="12,10" Background="Transparent"><StackPanel Orientation="Horizontal" Spacing="12"><FontIcon Glyph="&#xE713;" FontSize="16" Foreground="#91A0B5"/><TextBlock Text="设置" FontSize="14" Foreground="#C1CAD8"/></StackPanel></Border>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Spacing="8" Margin="4,0,0,2"><Border Height="1" Background="#2A374A" Margin="0,0,0,10"/><TextBlock Text="简洁 · 稳定 · 即时" FontSize="12" Foreground="#A5B0C0"/><TextBlock Text="CamStream for Windows" FontSize="11" Foreground="#64748B"/></StackPanel>
+            </Grid>
+        </Border>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="42,34,42,38" MaxWidth="1100" HorizontalAlignment="Left">
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <Grid><StackPanel Spacing="5"><TextBlock Text="实时推流" FontSize="28" FontWeight="SemiBold" Foreground="#142033"/><TextBlock Text="选择摄像头，轻松分享你的实时画面。" FontSize="14" Foreground="#728096"/></StackPanel><Border HorizontalAlignment="Right" VerticalAlignment="Top" Background="#E9F6EF" CornerRadius="14" Padding="11,7"><StackPanel Orientation="Horizontal" Spacing="7"><Ellipse Width="7" Height="7" Fill="#27AE70" VerticalAlignment="Center"/><TextBlock x:Name="StatusText" Text="准备就绪" FontSize="12" Foreground="#218557"/></StackPanel></Border></Grid>
+                <Grid Grid.Row="1" Margin="0,27,0,0" ColumnSpacing="18">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="1.1*"/><ColumnDefinition Width="0.9*"/></Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Background="White" CornerRadius="14" Padding="22" BorderBrush="#E9EDF3" BorderThickness="1">
+                        <StackPanel Spacing="15">
+                            <Grid><StackPanel Spacing="4"><TextBlock Text="摄像头" FontSize="16" FontWeight="SemiBold" Foreground="#1D2939"/><TextBlock Text="选择用于推流的视频设备" FontSize="12" Foreground="#8792A3"/></StackPanel><Button x:Name="RefreshButton" Content="重新扫描" HorizontalAlignment="Right" VerticalAlignment="Center" Click="RefreshButton_Click"/></Grid>
+                            <ComboBox x:Name="CameraCombo" PlaceholderText="正在扫描摄像头…" HorizontalAlignment="Stretch" MinHeight="42"/>
+                            <Grid ColumnSpacing="12"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <StackPanel Spacing="7"><TextBlock Text="分辨率" FontSize="12" Foreground="#697586"/><ComboBox x:Name="ResolutionCombo" SelectedIndex="1" HorizontalAlignment="Stretch"><ComboBoxItem Content="1280 × 720" Tag="1280x720"/><ComboBoxItem Content="1920 × 1080" Tag="1920x1080"/><ComboBoxItem Content="640 × 480" Tag="640x480"/></ComboBox></StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="7"><TextBlock Text="帧率" FontSize="12" Foreground="#697586"/><ComboBox x:Name="FpsCombo" SelectedIndex="0" HorizontalAlignment="Stretch"><ComboBoxItem Content="30 FPS" Tag="30"/><ComboBoxItem Content="60 FPS" Tag="60"/><ComboBoxItem Content="24 FPS" Tag="24"/></ComboBox></StackPanel>
+                            </Grid>
+                            <Grid ColumnSpacing="12"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <StackPanel Spacing="7"><TextBlock Text="视频编码" FontSize="12" Foreground="#697586"/><ComboBox x:Name="CodecCombo" SelectedIndex="0" HorizontalAlignment="Stretch"><ComboBoxItem Content="H.264 · 通用" Tag="libx264"/><ComboBoxItem Content="H.265 · 高压缩" Tag="libx265"/><ComboBoxItem Content="NVIDIA · NVENC" Tag="h264_nvenc"/></ComboBox></StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="7"><TextBlock Text="传输模式" FontSize="12" Foreground="#697586"/><ComboBox x:Name="TransportCombo" SelectedIndex="0" HorizontalAlignment="Stretch"><ComboBoxItem Content="UDP · 低延迟" Tag="udp"/><ComboBoxItem Content="TCP · 更稳定" Tag="tcp"/></ComboBox></StackPanel>
+                            </Grid>
+                            <StackPanel Spacing="7"><TextBlock Text="音频输入" FontSize="12" Foreground="#697586"/><ComboBox x:Name="AudioCombo" HorizontalAlignment="Stretch" PlaceholderText="无音频"/></StackPanel>
+                            <Button x:Name="StartButton" Content="开始推流" HorizontalAlignment="Stretch" MinHeight="46" Background="#2D6AE3" Foreground="White" Click="StartButton_Click"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Background="#111C2E" CornerRadius="14" Padding="22">
+                        <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid><StackPanel Spacing="4"><TextBlock Text="推流预览" FontSize="16" FontWeight="SemiBold" Foreground="White"/><TextBlock Text="本机摄像头画面" FontSize="12" Foreground="#91A0B5"/></StackPanel><Border HorizontalAlignment="Right" Background="#25344A" CornerRadius="10" Padding="8,4"><TextBlock x:Name="PreviewBadge" Text="未连接" FontSize="11" Foreground="#AAB7C8"/></Border></Grid>
+                            <Border Grid.Row="1" Margin="0,18,0,18" CornerRadius="10" Background="#19263A" MinHeight="220"><Grid><Image x:Name="PreviewImage" Stretch="Uniform" Visibility="Collapsed"/><StackPanel x:Name="PreviewPlaceholder" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10"><Border Width="52" Height="52" CornerRadius="26" Background="#253650"><FontIcon Glyph="&#xE714;" FontSize="22" Foreground="#7F96B5" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock x:Name="PreviewText" Text="开始推流后，画面将在此显示" FontSize="12" Foreground="#9AA8BA" HorizontalAlignment="Center"/></StackPanel></Grid></Border>
+                            <StackPanel Grid.Row="2" Spacing="9"><TextBlock Text="RTSP 地址" FontSize="12" Foreground="#91A0B5"/><Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox x:Name="UrlBox" Text="rtsp://127.0.0.1:8554/live" IsReadOnly="True" FontFamily="Consolas" FontSize="12"/><Button Grid.Column="1" Content="复制" Click="CopyButton_Click"/></Grid><TextBlock Text="局域网设备请将 127.0.0.1 替换为本机 IP" FontSize="11" Foreground="#76869C" TextWrapping="Wrap"/></StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+                <Border Grid.Row="2" Margin="0,18,0,0" Background="White" CornerRadius="14" Padding="20" BorderBrush="#E9EDF3" BorderThickness="1"><Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Border Width="40" Height="40" CornerRadius="12" Background="#EEF4FF"><FontIcon Glyph="&#xE946;" FontSize="18" Foreground="#3976E8" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4"><TextBlock Text="快速连接" FontSize="14" FontWeight="SemiBold" Foreground="#1D2939"/><TextBlock Text="在 VLC、OBS 或其他播放器中打开 RTSP 地址。确保设备处于同一局域网。" FontSize="12" Foreground="#788496" TextWrapping="Wrap"/></StackPanel><TextBlock Grid.Column="2" Text="UDP 低延迟" FontSize="11" Foreground="#3976E8" VerticalAlignment="Center"/></Grid></Border>
+                <TextBlock Grid.Row="3" x:Name="HintText" Text="首次推流将自动准备 FFmpeg 与 MediaMTX。" Margin="2,18,0,0" FontSize="12" Foreground="#8792A3" TextWrapping="Wrap"/>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

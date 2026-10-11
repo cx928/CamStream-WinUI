@@ -1,0 +1,7 @@
+# CamStream - 摄像头 RTSP 推流工具
+# Python 3.10+
+
+PyQt6>=6.6.0
+opencv-python>=4.9.0
+numpy>=1.24.0
+pygrabber>=0.2
