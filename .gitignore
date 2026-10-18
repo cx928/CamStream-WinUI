@@ -43,3 +43,8 @@ tools/WindowsAppRuntimeInstall-x64.exe
 tools/
 *.DDF
 
+.wix/
+scripts/Bootstrapper/
+installer/CamStream.wxs
+installer/*.generated.wxs
+

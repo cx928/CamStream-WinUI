@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+  <Bundle Name="CamStream"
+          Manufacturer="CamStream"
+          Version="1.0.0"
+          UpgradeCode="3C7E5A21-9B4D-4F16-8A2C-6D1E9B4A7F30">
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication Theme="hyperlinkLicense" LicenseUrl="" />
+    </BootstrapperApplication>
+    <Variable Name="WINDOWSAPPRUNTIME16" Type="numeric" Value="0" />
+    <Chain>
+      <ExePackage Id="WindowsAppRuntime16"
+                  SourceFile="__RUNTIME_INSTALLER__"
+                  PerMachine="yes"
+                  Permanent="yes"
+                  Vital="no"
+                  DetectCondition="WINDOWSAPPRUNTIME16"
+                  InstallArguments="/quiet /norestart" />
+      <MsiPackage SourceFile="__APP_MSI__" Vital="yes" Compressed="yes" />
+    </Chain>
+  </Bundle>
+  <Fragment>
+    <util:RegistrySearch Id="SearchRuntime16"
+                         Root="HKLM"
+                         Key="SOFTWARE\Microsoft\WindowsAppRuntime\InstalledVersions\1.6\x64"
+                         Value="Version"
+                         Result="exists"
+                         Bitness="always64"
+                         Variable="WINDOWSAPPRUNTIME16" />
+  </Fragment>
+</Wix>
