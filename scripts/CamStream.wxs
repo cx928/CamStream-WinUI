@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="CamStream" Manufacturer="CamStream" Version="1.0.0" UpgradeCode="{3A6D1BA6-3E74-4EB3-9A21-CEBDB3C0F2F4}" Scope="perUserOrMachine" Compressed="yes">
+    <MajorUpgrade DowngradeErrorMessage="已安装更新版本的 CamStream。" />
+    <MediaTemplate EmbedCab="yes" />
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="CamStream" />
+    </StandardDirectory>
+    <Feature Id="MainFeature" Title="CamStream" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+    </Feature>
+  </Package>
+  <Fragment>
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.StageDir)\**" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>
