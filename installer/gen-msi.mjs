@@ -152,15 +152,15 @@ ${runtimeComponent}
         <Shortcut Id="StartMenuShortcut" Name="CamStream" Description="CamStream RTSP streaming"
                   Target="[INSTALLFOLDER]CamStream.WinUI.exe" WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="RemoveAppProgramMenuDir" Directory="AppProgramMenuDir" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\\CamStream" Name="startmenu" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKMU" Key="Software\\CamStream" Name="startmenu" Type="integer" Value="1" KeyPath="yes" />
       </Component>
       <Component Id="cmpDesktopShortcut" Directory="DesktopFolder" Guid="${guidFor('shortcut-desktop')}">
         <Shortcut Id="DesktopShortcut" Name="CamStream" Description="CamStream RTSP streaming"
                   Target="[INSTALLFOLDER]CamStream.WinUI.exe" WorkingDirectory="INSTALLFOLDER" />
-        <RegistryValue Root="HKCU" Key="Software\\CamStream" Name="desktop" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKMU" Key="Software\\CamStream" Name="desktop" Type="integer" Value="1" KeyPath="yes" />
       </Component>
       <Component Id="cmpAppRegistry" Directory="INSTALLFOLDER" Guid="${guidFor('registry-app')}">
-        <RegistryValue Root="HKLM" Key="Software\\CamStream" Name="InstallDir" Type="string" Value="[INSTALLFOLDER]" KeyPath="yes" />
+        <RegistryValue Root="HKMU" Key="Software\\CamStream" Name="InstallDir" Type="string" Value="[INSTALLFOLDER]" KeyPath="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
