@@ -33,3 +33,13 @@ packages/*.exe
 
 packages/*.zip.*
 
+
+# Release packages
+artifacts/
+publish/
+tools/WindowsAppRuntimeInstall-x64.exe
+
+
+tools/
+*.DDF
+

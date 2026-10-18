@@ -1,37 +1,40 @@
-# CamStream for WinUI 3
+# CamStream WinUI 3
 
-原 CamStream（Python/PyQt）项目的原生 Windows 桌面重构版。新版本使用 C#、WinUI 3 和 Windows App SDK，保留原版 RTSP 推流目标，并采用简洁的双栏操作界面。
+CamStream 将摄像头画面转换为局域网 RTSP 视频流。该目录包含原 Python/PyQt 版本与原生 C# / WinUI 3 版本。
 
-## 功能
+## WinUI 3 功能
 
-- 自动枚举摄像头和麦克风
-- 选择视频分辨率、帧率、H.264/H.265/NVIDIA NVENC 编码与 UDP/TCP 传输
-- 通过 FFmpeg DirectShow 同步采集摄像头和可选麦克风
-- 启动/停止 MediaMTX RTSP 服务与 FFmpeg 推流
-- 默认端口 8554 被占用时依次尝试 18554、28554、38554
-- 从本机 RTSP 服务回读视频并在窗口预览
-- 自动从 Gyan.dev 获取 FFmpeg Essentials，MediaMTX 从官方 GitHub Release 下载
-- 安装到 `%LOCALAPPDATA%\\CamStream\\tools`，不要求管理员权限
-- 复制 RTSP 地址；关闭程序时停止其启动的 FFmpeg/MediaMTX 进程
+- 摄像头、麦克风选择
+- 分辨率、帧率、H.264/H.265/NVIDIA NVENC、UDP/TCP 配置
+- FFmpeg DirectShow 采集与 RTSP 推流
+- MediaMTX 服务启动和备用端口选择
+- 本机 RTSP 回读预览、RTSP 地址复制
+- 运行组件自动准备
 
-## 运行与构建
+## 版本与运行
 
-- Windows 10 1809+（建议 Windows 11），x64
-- .NET 8 SDK、Visual Studio 2022 的 Windows App SDK/WinUI 3 构建组件
-- 用 Visual Studio 打开 `CamStream.WinUI.csproj`，选择 x64 并生成
+发布页提供两种 x64 版本：
 
-首次推流需要网络连接以下载 FFmpeg 与 MediaMTX。二者下载后保存在当前 Windows 用户的 `%LOCALAPPDATA%\\CamStream\\tools`。FFmpeg Essentials ZIP 中只解压 `bin` 目录文件。
+- **安装版**：运行 `CamStream-Setup-1.0.0.exe`，快捷方式创建在开始菜单和桌面。
+- **免安装版**：解压 `CamStream-Portable-1.0.0.zip` 后运行 `CamStream.WinUI.exe`，不写入注册表，可放在 U 盘目录。
 
-> 此应用是 unpackaged WinUI 3 桌面程序。Windows Defender 防火墙在不同设备策略下表现不同；若其他局域网设备无法连接，请在 Windows 防火墙中手动允许所选 RTSP 端口的入站 TCP/UDP。程序不会静默改写系统防火墙规则。
+两个版本均包含自包含 .NET/WinUI 发布文件、FFmpeg、MediaMTX。离线安装版需先在联网时安装一次 Windows App Runtime 1.6；在线安装版由安装器自动下载并安装该运行时。首次启动和推流无需再下载 FFmpeg/MediaMTX。
 
-## 拉流
+系统要求：Windows 10 1809+ x64。局域网其他设备拉流时，将 `127.0.0.1` 替换成运行本程序的电脑局域网 IP。防火墙规则需按需手动允许所选 RTSP 端口。
 
-启动推流后复制地址。局域网其他设备需把地址中的 `127.0.0.1` 替换为运行此应用的电脑的局域网 IPv4 地址，然后在 VLC/OBS/ffplay 中打开。
+## 作者与论坛
 
-## 原 Python 版
+- 作者主页：[Bilibili](https://space.bilibili.com/1765875510)
+- 论坛：[www.xiaorin.cn](https://www.xiaorin.cn)
 
-`main.py`、`src/` 和原有 Python 依赖仍保留。C# WinUI 版入口为 `App.xaml` 与 `MainWindow.xaml`。
+## 开发与构建
 
-## 当前限制
+使用 .NET SDK 8.0.425 和 Visual Studio 2022 / Windows App SDK，在 x64 下构建：
 
-设备兼容性取决于 DirectShow 驱动暴露的名称/格式；所选摄像头分辨率、帧率或 NVENC 不支持时，需调整选择。当前版本没有自动改防火墙规则和安装包/MSIX 发布配置。FFmpeg 下载源为 Gyan.dev FFmpeg Essentials build，MediaMTX 使用项目原有版本 1.16.2。
+```powershell
+.\scripts\publish.ps1
+```
+
+脚本会生成 `artifacts\CamStream-Setup-1.0.0.exe` 和 `artifacts\CamStream-Portable-1.0.0.zip`。构建前需要安装 Inno Setup 6，并在 `tools\ffmpeg` 放入 FFmpeg Essentials 的可执行文件与 DLL，在 `tools\mediamtx\mediamtx.exe` 放入 MediaMTX。
+
+原 Python 版运行方式见上方原始 README 的快速开始部分。

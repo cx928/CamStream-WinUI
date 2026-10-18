@@ -170,15 +170,12 @@ CamStream/
 
 ---
 
-## 开发者
+## 作者与论坛
 
-**怒飞垂云** — 无人机调试 | 飞控硬件定制 | 固件修改 | Log 日志分析 | 飞控驱动添加
+- 作者主页：[Bilibili](https://space.bilibili.com/1765875510)
+- 论坛：[www.xiaorin.cn](https://www.xiaorin.cn)
 
-- QQ：3500985284
-- 博客：[www.nufeichuiyun.com](http://www.nufeichuiyun.com/)
-- 教程：[无人机飞控开发课程（网易云课堂）](https://study.163.com/course/introduction/1209568864.htm?share=1&shareId=1448054983)
+## WinUI 3 安装与便携版本
 
-<p align="left">
-  <img src="pictures/公众号.jpg" alt="公众号" width="300">
-</p>
+WinUI 3 版本将提供标准安装程序和免安装 ZIP；详细说明与构建方式见 [README-WinUI.md](README-WinUI.md)。安装/便携包包含应用和 FFmpeg/MediaMTX，Windows App Runtime 首次使用时按提示安装。
 

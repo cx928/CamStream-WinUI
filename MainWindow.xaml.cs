@@ -27,6 +27,7 @@ public sealed partial class MainWindow : Window
     private CancellationTokenSource? _previewCts;
     private bool _initialScanStarted;
     private bool _isStarting;
+    private bool _runtimeChecked;
     private int _activePort;
 
     public MainWindow()
@@ -41,6 +42,11 @@ public sealed partial class MainWindow : Window
     {
         if (_initialScanStarted) return;
         _initialScanStarted = true;
+        if (!_runtimeChecked)
+        {
+            _runtimeChecked = true;
+            if (!await EnsureWindowsAppRuntimeAsync()) return;
+        }
         try { await RefreshDevicesAsync(); }
         catch (Exception ex) { HintText.Text = $"设备扫描失败：{ex.Message}"; }
     }
@@ -49,6 +55,49 @@ public sealed partial class MainWindow : Window
     {
         StopProcesses();
         _http.Dispose();
+    }
+
+    private async Task<bool> EnsureWindowsAppRuntimeAsync()
+    {
+        if (!IsWindowsAppRuntimeInstalled())
+        {
+            var installer = Path.Combine(AppContext.BaseDirectory, "WindowsAppRuntimeInstall-x64.exe");
+            if (!File.Exists(installer))
+            {
+                await ShowMessageAsync("缺少 Windows App Runtime 1.6，安装程序文件也未找到。请重新下载安装包。", "无法启动 CamStream");
+                return false;
+            }
+            try
+            {
+                var process = StartProcess(installer, ["/quiet", "/norestart"], AppContext.BaseDirectory, false);
+                await process.WaitForExitAsync();
+                process.Dispose();
+            }
+            catch (Exception ex)
+            {
+                await ShowMessageAsync($"无法安装 Windows App Runtime：{ex.Message}", "运行时安装失败");
+                return false;
+            }
+            if (!IsWindowsAppRuntimeInstalled())
+            {
+                await ShowMessageAsync("Windows App Runtime 安装未完成。请重试运行时安装程序。", "运行时安装失败");
+                return false;
+            }
+            var executable = Environment.ProcessPath;
+            if (!string.IsNullOrWhiteSpace(executable))
+                Process.Start(new ProcessStartInfo(executable) { UseShellExecute = true });
+            Close();
+            return false;
+        }
+        return true;
+    }
+
+    private static bool IsWindowsAppRuntimeInstalled()
+    {
+        using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\WindowsAppRuntime\InstalledVersions\1.6\x64");
+        if (key?.GetValue("Version") is not null) return true;
+        using var userKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\WindowsAppRuntime\InstalledVersions\1.6\x64");
+        return userKey?.GetValue("Version") is not null;
     }
 
     private async Task RefreshDevicesAsync()
@@ -186,10 +235,16 @@ public sealed partial class MainWindow : Window
         var ffmpegPath = Path.Combine(toolsDirectory, "ffmpeg.exe");
         var mediamtxPath = Path.Combine(toolsDirectory, "mediamtx.exe");
         var bundledTools = Path.Combine(AppContext.BaseDirectory, "tools");
+        var bundledFfmpeg = Path.Combine(bundledTools, "ffmpeg", "ffmpeg.exe");
+        var bundledMediaMtx = Path.Combine(bundledTools, "mediamtx", "mediamtx.exe");
         if (!File.Exists(ffmpegPath) && File.Exists(Path.Combine(bundledTools, "ffmpeg.exe")))
             File.Copy(Path.Combine(bundledTools, "ffmpeg.exe"), ffmpegPath, true);
+        else if (!File.Exists(ffmpegPath) && File.Exists(bundledFfmpeg))
+            File.Copy(bundledFfmpeg, ffmpegPath, true);
         if (!File.Exists(mediamtxPath) && File.Exists(Path.Combine(bundledTools, "mediamtx.exe")))
             File.Copy(Path.Combine(bundledTools, "mediamtx.exe"), mediamtxPath, true);
+        else if (!File.Exists(mediamtxPath) && File.Exists(bundledMediaMtx))
+            File.Copy(bundledMediaMtx, mediamtxPath, true);
 
         if (!File.Exists(ffmpegPath))
         {
